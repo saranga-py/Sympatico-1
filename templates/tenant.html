@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landlord.css') }}">
+{% endblock %}
+
+{% block title %}
+Sympatico | Tenant Portal
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h4>Welcome to the tenant portal</h4>
+  <div class="flex-box">
+    <p>First we'll need to capture some information about you. You can do this by creating a landlord account below.</p>
+    <br>
+    <p>If you already have an account you can proceed to authenticate yourself.</p>
+    <br>
+    <p>You will be required to fill in detailed information about your property, so make sure to fill in the correct information as you may not be able to change it in the future.</p>
+    <br>
+    <p>Once completion of registering yourself you will be assigned a six-digit unique code that will be used to identify yourself. You will be required to provide that number every time you login so that the system can identify you.</p>
+    <br>
+    <p><b>DO NOT SHARE YOUR CODE WITH ANYONE ELSE</b></p>
+    <br>
+    <p>Lastly, If you have any feedback on how we can improve the system feel free to contact us via our email or gives us a call.</p>
+  </div>
+  <a href="#form">
+    <button class="btn1">Proceed to create an account</button>
+  </a>
+  <a href="{{ url_for('tenant_login') }}">
+    <button class="btn2">login to my portal</button>
+  </a>
+</div>
+<form id="form" method="POST">
+  {{ form.hidden_tag() }}
+  {{ form.csrf_token }}
+  <h4>create a tenant account</h4>
+  {{ form.first_name(placeholder="Enter First Name") }}<br>
+  {{ form.second_name(placeholder="Enter Second Name") }}<br>
+  {{ form.last_name(placeholder="Enter Last Name") }}<br>
+  {{ form.email_address(placeholder="Enter Email Address") }}<br>
+  {{ form.phone_number(placeholder="Enter Phone Number")}}<br>
+  {{ form.username(placeholder="Enter Username")}}<br>
+  {{ form.landlord_id(placeholder="Enter Landlord ID")}}<br>
+  {{ form.password(placeholder="Enter Password")}}<br>
+  {{ form.password1(placeholder="Confirm Password") }}<br>
+  <button class="btn" type="submit">
+    <span class="button--text">Continue</span>
+  </button>
+</form>
+
+<script src="{{ url_for('static', filename='js/tenant.js') }}"></script>
+{% endblock %}

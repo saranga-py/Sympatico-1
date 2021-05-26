@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block head %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/css/bootstrap.css') }}">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+  <title>{% block title %}{% endblock %}</title>
+  {% endblock %}
+</head>
+<div class="nav">
+ <div class="overlays">
+  <a href="{{ url_for('index') }}">
+   <h4 id="logo">SYMPATICO</h4>
+  </a>
+  <div class="links">
+    {% block content %}{% endblock %}
+  </div>
+  {% if current_user.is_authenticated %}
+    <div class="login">
+      <img src="../static/css/Images/login.png">
+      <p>{{ current_user.username }}</p>
+    </div>
+    <div class="profile">
+      <a href="{{ url_for('logout') }}">
+        <p>Logout</p>
+      </a>
+    </div>
+  {% else %}
+    <div class="user">
+      <a href="{{ url_for('signup') }}">
+        <button id="sign-up">SIGN UP</button>
+      </a>
+      <a href="{{ url_for('signin') }}">
+        <button id="sign-in">SIGN IN</button>
+      </a>
+    </div>
+  {% endif %}
+  <div class="burger">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </div>
+ </div>
+</div>
+<body id="body">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="tops">
+        {% for category, message in messages %}
+        <div class="alert alert-{{category}}">
+          {{ message }}
+        </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+{% block body %}
+{% endblock %}
+</body>
+<div class="footer">
+  <p>Copyright &copy; SYMPATICO <span id="date"></span>. All Rights Reserved</p>
+</div>
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+</html>

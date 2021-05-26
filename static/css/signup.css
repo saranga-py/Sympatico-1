@@ -1,0 +1,127 @@
+body {
+  background-color: #212121;
+}
+
+.overlays {
+  background-color: white;
+}
+
+.user {
+  display: none;
+}
+
+.burger {
+  display: none;
+}
+
+.login {
+  display: none;
+}
+
+.nav {
+  padding: 20px;
+  justify-content: space-between;
+  box-shadow: 0px 2px 10px -8px black;
+}
+
+form {
+  background: #212121;
+  padding: 50px;
+  text-align: center;
+}
+
+form > h4 {
+  color: bisque;
+  font-size: 30px;
+  margin-bottom: 30px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-transform: uppercase;
+}
+
+input {
+  padding: 15px;
+  margin: 5px;
+  width: 80vw;
+  border-radius: 8px;
+  background-color: rgb(0, 0, 0);
+  border: 2px solid bisque;
+  color: rgb(255, 255, 255);
+  font-size: 17px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+::placeholder {
+  font-size: 17px;
+  font-family: monospace;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+}
+
+form > .btn {
+  margin-top: 20px;
+  position: relative;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  padding: 10px;
+  width: 80vw;
+  border-radius: 8px;
+  font-size: 20px;
+  background-color: rgb(0, 26, 255);
+  border: 1px solid rgb(0, 26, 255);
+  color: bisque;
+  cursor: pointer;
+}
+
+.button--text {
+  font-family: monospace;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.btn--loading .button--text {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.btn--loading::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px solid transparent;
+  border-top-color: rgb(58, 247, 1);
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.box {
+  padding: 30px;
+  background-color: bisque;
+  text-align: center;
+}
+
+.box p {
+  font-size: 20px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(0, 0, 0);
+  margin-bottom: 10px;
+}
+
+.box > a {
+  font-size: 20px;
+  color: rgb(0, 119, 255);
+  font-family: monospace;
+}

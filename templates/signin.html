@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/signin.css') }}">
+{% endblock %}
+
+{% block title %}
+Sympatico | Signin
+{% endblock %}
+
+{% block body %}
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <h4>Confirm Your Identity</h4>
+  {{ form.username(placeholder="Enter Username") }}
+  {{ form.password(placeholder="Enter Password") }}
+  <button class="btn" type="submit">
+    <span class="button--text">SIGN IN</span>
+  </button>
+  <div class="box">
+    <p>Don't have an account, proceed to Sign Up</p>
+    <a href="{{ url_for('signup') }}">Signup</a>
+  </div>
+</form>
+
+<script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+{% endblock %}

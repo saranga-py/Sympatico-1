@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block title %}
+Sympatico | Home
+{% endblock %}
+
+{% block content %}
+<a id="links" href="#">ABOUT US</a>
+<a id="links" href="#">SERVICES</a>
+<div class="dropdown">
+  <a id="links" href="#">SYSTEMS 
+    <i class="fa fa-caret-down"></i>
+  </a>
+  <div class="dropdown-content">
+    <a href="{{ url_for('landlord') }}" target="_blank">Landlord Portal</a>
+    <a href="{{ url_for('tenant') }}" target="_blank">Tenant Portal</a>
+  </div>
+</div>
+<a id="links" href="#">CONTACT US</a> 
+{% endblock %}
+
+{% block body %}
+<div class="text">
+  <h4>Digitizing the property industry</h4>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque quam sed veniam sit sint sunt tempora excepturi maiores adipisci eos exercitationem, esse, sequi odio dolore, ducimus non aspernatur sapiente incidunt!</p>
+  <button>Learn More</button>
+</div>
+<div class="info">
+  <h4 data-aos="fade-up" data-aos-duration="1000">What is Sympatico all about</h4>
+  <p data-aos="fade-up" data-aos-duration="1000">Sympatico is a digital system designed for property managers to meet their every need from managing their clients and also managing their properties.The system works by blending everything under one system thus making it easy for property managers to manage their properties and also because of this it eases pressure on the property managers as the clients can also interact with the system and assist them with all their needs.</p>
+  <button id="btn" data-aos="fade-up" data-aos-duration="1000">Learn More</button>
+</div>
+<div class="work">
+  <h4 data-aos="fade-up" data-aos-duration="1000">our area of expertise</h4>
+  <div class="grid">
+    <div class="item-1" data-aos="slide-right" data-aos-duration="1000">
+      <h4>Apartments</h4>
+    </div>
+    <div class="item-2" data-aos="slide-left" data-aos-duration="1000">
+      <h4>Residential</h4>
+    </div>
+    <div class="item-3" data-aos="slide-right" data-aos-duration="1000">
+      <h4>Offices</h4>
+    </div>
+    <div class="item-4" data-aos="slide-left" data-aos-duration="1000">
+      <h4>Warehouse</h4>
+    </div>
+  </div>
+  <div class="project">
+    <h4 data-aos="fade-in" data-aos-duration="2000">projects done so far</h4>
+    <div class="grid">
+      
+    </div>
+  </div>
+</div>
+<div class="experts">
+  <h4 data-aos="fade-up" data-aos-duration="1000">Hear from our experts</h4>
+  <div class="expert-info">
+    <img data-aos="fade-up" data-aos-duration="1000" src="{{ url_for('static', filename='css/Images/expert.jpg') }}">
+    <div class="paragraph">
+      <p data-aos="fade-up" data-aos-duration="1000">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere, laudantium eveniet incidunt ab modi, sit quisquam adipisci facilis eaque minus est numquam, mollitia dolore. Omnis quia iure sed. Sequi, repellendus. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum libero consectetur reprehenderit perferendis ad ullam expedita ut, repellat quos earum voluptatum voluptates sint culpa doloremque rem autem quo ipsam enim!. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum maiores aperiam iure veritatis? Nulla vero mollitia impedit, eos necessitatibus iusto modi quaerat possimus.</p>
+      <button >Learn More</button>
+    </div>
+  </div>
+</div>
+<div class="more-info">
+  <div class="section" data-aos="slide-right" data-aos-duration="1000">
+    <div id="image">
+      <img src="{{ url_for('static', filename='css/Images/efficiency.png') }}">
+    </div>
+    <div id="text-info" data-aos="fade-up" data-aos-duration="1500">
+      <h4>Designed with efficiency in mind</h4>
+      <p>The system is designed to be as efficient as possible by providing you with all the information you need in one platform</p>
+      <button id="discover">Discover</button>
+    </div>
+  </div>
+  <div class="section" data-aos="slide-left" data-aos-duration="1000">
+    <div id="image">
+      <img src="{{ url_for('static', filename='css/Images/simplicity.jpg') }}">
+    </div>
+    <div id="text-info" data-aos="fade-up" data-aos-duration="1500">
+      <h4>Designed with simplicity in mind</h4>
+      <p>The system is designed to be as simple to use by designing a user-friendly interface that any user can be comfortable with</p>
+      <button id="discover">Discover</button>
+    </div>
+  </div>
+</div>
+{% if current_user.is_authenticated %}
+  <div class="subscribe">
+    <div class="mini-box">
+      <h4>Our news letter will be sent to your email</h4>
+    </div>
+  </div>
+{% else %}
+  <div class="subscribe">
+    <div class="mini-box">
+      <h4>Subscribe to our news letter by signing up</h4>
+    </div>
+  </div>
+{% endif %}
+<div class="contacts">
+  <div class="address" data-aos="fade-up">
+    <h4>Address</h4>
+    <p>Bitcoin Lounge, Kenyatta University</p>
+    <p>Off Thika Road</p>
+  </div>
+  <div class="system" data-aos="fade-up">
+    <h4>system</h4>
+    <p>Landlord Portal</p>
+    <p>Tenant Portal</p>
+  </div>
+  <div class="other" data-aos="fade-up">
+    <h4>Company</h4>
+    <a href="#">ICT Support</a>
+    <a href="#">Legal</a>
+    <a href="#">FAQ</a>
+  </div>
+</div>
+<div class="social">
+  <i data-aos="slide-right" style="font-size: 25px;" class="fa fa-facebook"></i>
+  <i data-aos="slide-right" style="font-size: 25px;" class="fa fa-instagram "></i>
+  <i data-aos="slide-left" style="font-size: 25px;" class="fa fa-twitter"></i>
+  <i data-aos="slide-left" style="font-size: 25px;" class="fa fa-linkedin"></i>
+</div>
+<a class="top" href="#body">V</a>
+
+<script src="{{ url_for('static', filename='js/index.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block title %}
+Sympatico | Tenant Dashboard
+{% endblock %}
+
+{% block body %}
+<h4 id="h4">Tenant Dashboard</h4>
+<div class="container">
+  <div class="side-container">
+    <div class="logo">
+      <h2>Sympatico</h2>
+      <h4>{{ current_user.username }}</h4>
+    </div>
+    <div class="main-content">
+      <h2>Main</h2>
+      <div class="contents">
+        <h3>My Unit</h3>
+        <h3>Landlord Details</h3>
+        <h3>Extras</h3>
+        <h3>Complaints</h3>
+        <h3>Help</h3>
+      </div>
+    </div>
+    <div class="other-content">
+      <h2>Secondary</h2>
+      <h3>Settings</h3>
+      <h3>Profile</h3>
+    </div>
+    <div class="exit">
+      <a href="{{ url_for('tenant_logout') }}">Logout</a>
+    </div>
+  </div>
+  <div class="main-container">
+    <div class="unit">
+      <h4>Unit Details</h4>
+    </div>
+    <div class="landlord">
+      <h3>Landlord Details</h3>
+      <hr>
+      <h4>First name: <b>{{ landlords.first_name }}</b></h4>
+      <h4>Second Name: <b>{{ landlords.second_name }}</b></h4>
+      <h4>Last Name: <b>{{ landlords.last_name }}</b></h4>
+      <h4>Email Address: <b>{{ landlords.email }}</b></h4>
+      <h4>Phon Number: <b>0{{ landlords.phone }}</b> </h4>
+    </div>
+    <div class="extras">
+      <h4>Extras</h4>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,269 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+  padding: 0px;
+}
+
+#logo {
+  font-size: 30px;
+  color: green;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.links {
+  width: 40vw;
+  display: inherit;
+  justify-content: space-around;
+}
+
+a {
+  text-decoration: none;
+}
+
+#links {
+  height: 0;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: rgb(38, 163, 44);
+  font-family: 'PT Sans', sans-serif;
+  transition: 0.1s;
+  transition-timing-function: ease-in-out;
+}
+
+#links:hover {
+  color: rgb(255, 141, 1);
+}
+
+.user {
+  width: 13vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user > a > button {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 4px;
+  width: 5.8vw;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+.user > a > button:hover {
+  transform: scale(1.05, 1.05);
+}
+
+#sign-up {
+  background-color: rgb(86, 235, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+#sign-in {
+  background-color: rgb(238, 255, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8vh;
+  width: 13vw;
+  background: transparent;
+  cursor: pointer;
+}
+
+.login img {
+  height: 8vh;
+  width: 6vw;
+}
+
+.login p {
+  color: white;
+  font-size: 15px;
+  font-family: 'PT Sans', sans-serif;
+  letter-spacing: 2px;
+  margin-left: -10px;
+}
+
+.burger {
+  display: none;
+  margin-top: 18px;
+  cursor: pointer;
+}
+
+.burger div {
+  height: 4px;
+  width: 1.5rem;
+  margin: 4px;
+  background-color: bisque;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  margin-top: 60px;
+  width: 18vw;
+  padding: 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  visibility: hidden;
+  transition: 0.2s;
+  transition-timing-function: ease-in;
+}
+
+.profile:hover {
+  background: #212121;
+}
+
+.profile p {
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: rgb(0, 156, 34);
+  margin-top: -10px;
+}
+
+.show-profile {
+  visibility: visible;
+}
+
+.overlays {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 100vw;
+  margin: -10px;
+  padding-top: 5px;
+}
+
+.footer {
+  background-color: black;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 100vw;
+}
+
+.footer > p {
+  color: bisque;
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-family: 'PT Sans', sans-serif;
+}
+
+@media screen and (max-width: 800px) {
+  #logo {
+    font-size: 25px;
+  }
+
+  .user {
+    display: none;
+  }
+
+  .login {
+    display: none;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .burger {
+    height: 0;
+    margin-top: 18px;
+    display: block;
+  }
+
+  .footer p {
+    text-align: center;
+    font-size: 8px;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1000px) {
+  .links {
+    width: 50vw;
+    display: flex;
+  }
+
+  .burger {
+    height: 0;
+    margin-top: 18px;
+    display: block;
+  }
+
+  .burger div {
+    height: 3px;
+    width: 1.3rem;
+  }
+
+  .user {
+    display: none;
+  }
+
+  .login {
+    display: none;
+  }
+
+  #links {
+    font-size: 18px;
+  }
+
+  #logo {
+    font-size: 22px;
+  }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1300px) {
+  .user {
+    display: none;
+  }
+
+  .login {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1301px) {
+  .user {
+    background-color: red;
+    width: 13rem;
+    height: 0;
+  }
+
+  .user > a > button {
+    width: 6rem;
+  }
+}
