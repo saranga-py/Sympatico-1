@@ -35,6 +35,9 @@ def load_user(Tenant_id):
   return Tenant.query.get(int(Tenant_id))
 
 active_users = []
+@app.route("/admin/active_users")
+def admin():
+  return render_template("active.html", active_users=active_users)
 
 @app.route("/")
 @app.route("/home")
@@ -213,4 +216,3 @@ def property():
       flash(f'There was an error creating the property: {err_msg}', category='danger')
 
   return render_template("property.html", form=form)
-  
