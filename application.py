@@ -1,4 +1,6 @@
-from flask import Flask, render_template, flash, redirect, url_for, request
+from operator import ne
+from flask import Flask, render_template, flash, redirect, url_for, session
+from flask_session import Session
 from flask_login.utils import login_required
 from form import user_registration, login, Property, landlord_form, tenant_form, tenant_login_form, landlord_login_form
 from models import user, db, Properties, Landlord, Tenant, Unit
@@ -10,11 +12,12 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = ('mssql://KEVINKAGWIMA/sympatico?driver=sql server?trusted_connection=yes')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'mysecretkeythatyouarenotsupposedtosee'
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
 
+Session(app)
 db.init_app(app)
 login_manager = LoginManager()
-login_manager.login_view = 'tenant_login'
-login_manager.login_message_category = "danger"
 login_manager.login_view = 'Landlord_login'
 login_manager.login_message_category = "danger"
 login_manager.init_app(app)
@@ -30,6 +33,8 @@ def load_user(Landlord_id):
 @login_manager.user_loader
 def load_user(Tenant_id):
   return Tenant.query.get(int(Tenant_id))
+
+active_users = []
 
 @app.route("/")
 @app.route("/home")
@@ -98,7 +103,6 @@ def landlord():
     )
     db.session.add(new_landlord)
     db.session.commit()
-    login_user(new_landlord)
     flash(f"Account created successfully", category="success")
     return redirect(url_for('Landlord_login'))
   if form.errors != {}:
@@ -113,12 +117,27 @@ def Landlord_login():
   new_landlord = Landlord.query.filter_by(landlord_id=form.landlord_id.data).first()
   if new_landlord and new_landlord.check_password_correction(attempted_password=form.password.data):
     login_user(new_landlord)
-    flash(f"Autentication complete", category="success")
-    return redirect(url_for('dashboard1'))
+    flash(f"Authentication complete", category="success")
+    properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner)
+    tenants = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).all()
+    active_users.append(new_landlord)
+    return render_template('dashboard1.html', properties=properties, tenants=tenants)
   else:
     flash(f"Invalid credentials", category="danger")
 
   return render_template("landlord_login.html", form=form)
+
+@app.route("/Landlord_dashboard", methods=["POST", "GET"])
+@login_required
+def landlord_dashboard():
+  return render_template("dashboard1.html")
+
+@app.route("/logout_landlord")
+@login_required
+def landlord_logout():
+  logout_user()
+  flash(f"Logged out successfully!", category="success")
+  return redirect(url_for('Landlord_login'))
 
 @app.route("/tenant_registration", methods=["POST", "GET"])
 def tenant():
@@ -141,6 +160,7 @@ def tenant():
     login_user(new_tenant)
     flash(f"Account created successfully", category="success")
     return redirect(url_for('tenant_login'))
+
   if form.errors != {}:
     for err_msg in form.errors.values():
       flash(f"There was an error creating the account {err_msg}", category="danger")
@@ -155,7 +175,8 @@ def tenant_login():
     if new_tenant and new_tenant.check_password_correction(attempted_password=form.password.data):
       login_user(new_tenant)
       flash(f"Authentication complete", category="success")
-      return redirect(url_for('dashboard'))
+      landlord = db.session.query(Landlord).filter(new_tenant.landlord == Landlord.id).first()
+      return render_template('dashboard.html', landlord=landlord)
     else:
       flash(f"Invalid credentials", category="danger")
 
@@ -167,38 +188,29 @@ def tenant_logout():
   flash(f"Logged out successfully!", category="success")
   return redirect(url_for('tenant_login'))
 
-@app.route("/dashboard")
-@login_required
-def dashboard():
-  landlords = db.session.query(Landlord).filter(Tenant.landlord == Landlord.id).first()
-  return render_template('dashboard.html', landlords=landlords)
-
-@app.route("/Landlord_Dashboard")
-@login_required
-def dashboard1():
-  return render_template("dashboard1.html")
-
 @app.route("/Landlord_portal/property_registration", methods=["POST", "GET"])
 @login_required
 def property():
   form = Property()
-  Unique_number = random.randint(100000, 999999)
-  date = datetime.datetime.now()
   if form.validate_on_submit():
     new_property = Properties(
       name = form.name.data,
       address = form.Address.data,
       floors = form.floors.data,
-      rooms = form.rooms.data,
+      rooms = form.units.data,
       Type = form.Type.data,
-      unique_id = Unique_number,
-      date = date,
+      unique_id = random.randint(100000, 999999),
+      date = datetime.datetime.now(),
+      owner = Landlord.query.filter_by(landlord_id=form.landlord_id.data).first().id
     )
     db.session.add(new_property)
     db.session.commit()
     flash(f"Property: {new_property.name}  was created successfully", category='success')
-    return redirect(url_for('property_login'))
+    return redirect(url_for('landlord_dashboard'))
+    
   if form.errors != {}:
     for err_msg in form.errors.values():
       flash(f'There was an error creating the property: {err_msg}', category='danger')
-  return render_template()
+
+  return render_template("property.html", form=form)
+  

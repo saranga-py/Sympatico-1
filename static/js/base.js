@@ -12,6 +12,12 @@ user.addEventListener('click', ()=> {
   profile.classList.toggle('show-profile')
 })
 
+const alert = document.querySelector(".alert")
+
+alert.addEventListener('click', ()=> {
+  alert.classList.add("alerts")
+})
+
 function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }

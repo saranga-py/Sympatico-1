@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/property.css') }}">
+{% endblock %}
+
+{% block title %}
+Sympatico | Property Registration
+{% endblock %}
+
+{% block body %}
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <h4>Register Your Property</h4>
+  {{ form.landlord_id(placeholder="Enter Landlord ID") }}
+  {{ form.name(placeholder="Enter Property Name") }} <br>
+  {{ form.Address(placeholder="Enter Property address") }} <br>
+  {{ form.floors(placeholder="Enter Number Of Floors") }} <br>
+  {{ form.units(placeholder="Enter Number Of Units") }} <br>
+  {{ form.Type }} <br>
+  <button class="btn" type="submit">
+   <span class="button--text">REGISTER PROPERTY</span>
+  </button>
+</form>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

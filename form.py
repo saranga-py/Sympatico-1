@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, PasswordField
+from wtforms import StringField, IntegerField, PasswordField, SelectField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
 from models import user, Landlord, Tenant
 
@@ -87,13 +87,14 @@ class tenant_login_form(FlaskForm):
   password = PasswordField(label="Enter password", validators=[DataRequired()])
 
 class Property(FlaskForm):
+  landlord_id = IntegerField(label="Enter Landlord ID", validators=[DataRequired()])
   name = StringField(label="Enter Property Name", validators=[DataRequired()])
   Address = StringField(label="Enter Property Address", validators=[DataRequired()])
   floors = IntegerField(label="Enter Number of Floors", validators=[DataRequired()])
-  rooms = IntegerField(label="Enter Total Number of rooms", validators=[DataRequired()])
-  Type = StringField(label="Enter type of property", validators=[DataRequired()])
+  units = IntegerField(label="Enter Total Number of rooms", validators=[DataRequired()])
+  Type = SelectField(label="Enter type of property", choices=["Apartment", "Residential", "Office", "Warehouse"], validators=[DataRequired()])
 
 class unit(FlaskForm):
   name = StringField(label='Name of Unit', validators=[DataRequired()])
   floor = IntegerField(label='Floor', validators=[DataRequired()])
-  Type = StringField(label='Type of Unit', validators=[DataRequired()])
+  Type = SelectField(choices=[""], label='Type of Unit', validators=[DataRequired()])

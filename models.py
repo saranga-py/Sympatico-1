@@ -91,7 +91,6 @@ class Properties(db.Model, UserMixin):
   date = db.Column(db.DateTime())
   Type = db.Column(db.String(length=50), nullable=False)
   unique_id = db.Column(db.Integer(), nullable=False)
-  date = db.Column(db.DateTime())
   owner = db.Column(db.Integer(), db.ForeignKey('Landlord.id'))
   unit = db.relationship('Unit', backref="units", lazy=True)
 
