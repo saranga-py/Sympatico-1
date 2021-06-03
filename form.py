@@ -1,7 +1,8 @@
+from datetime import date
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, PasswordField, SelectField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
-from models import user, Landlord, Tenant
+from models import Properties, user, Landlord, Tenant
 
 class user_registration(FlaskForm):
   first_name = StringField(label='First Name', validators=[DataRequired()])
@@ -94,7 +95,19 @@ class Property(FlaskForm):
   units = IntegerField(label="Enter Total Number of rooms", validators=[DataRequired()])
   Type = SelectField(label="Enter type of property", choices=["Apartment", "Residential", "Office", "Warehouse"], validators=[DataRequired()])
 
-class unit(FlaskForm):
+  def validate_landlord_id(self, property_id_to_validate):
+    landlord = Landlord.query.filter_by(landlord_id=property_id_to_validate.data).first()
+    if landlord is None:
+      raise ValidationError("Invalid Landlord ID")
+
+class unit_form(FlaskForm):
+  property_id = IntegerField(label="Enter Property ID", validators=[DataRequired()])
   name = StringField(label='Name of Unit', validators=[DataRequired()])
   floor = IntegerField(label='Floor', validators=[DataRequired()])
-  Type = SelectField(choices=[""], label='Type of Unit', validators=[DataRequired()])
+  quantity = IntegerField(label="Enter Quantity", validators=[DataRequired()])
+  Type = SelectField(label='Type of Unit',choices=["1 Bedroom", "2 Bedroom", "3 Bedroom", "Bedsitter", "1 Bedroom", "Penthouse", "4 Bedroom", "Mansionate"], validators=[DataRequired()])
+
+  def validate_property_id(self, unit_id_to_validate):
+    property = Properties.query.filter_by(property_id=unit_id_to_validate.data).first()
+    if property is None:
+      raise ValidationError("Invalid Property ID")

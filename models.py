@@ -90,7 +90,7 @@ class Properties(db.Model, UserMixin):
   rooms = db.Column(db.Integer(), nullable=False)
   date = db.Column(db.DateTime())
   Type = db.Column(db.String(length=50), nullable=False)
-  unique_id = db.Column(db.Integer(), nullable=False)
+  property_id = db.Column(db.Integer(), nullable=False)
   owner = db.Column(db.Integer(), db.ForeignKey('Landlord.id'))
   unit = db.relationship('Unit', backref="units", lazy=True)
 
@@ -102,5 +102,6 @@ class Unit(db.Model, UserMixin):
   date = db.Column(db.DateTime())
   Type = db.Column(db.String(length=50), nullable=False)
   quantity = db.Column(db.Integer(), nullable=False)
+  unit_id = db.Column(db.Integer(), nullable=False)
   Property = db.Column(db.Integer(), db.ForeignKey('Property.id'))
   tenant = db.Column(db.Integer(), db.ForeignKey('Tenant.id'))

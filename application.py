@@ -1,8 +1,8 @@
-from operator import ne
-from flask import Flask, render_template, flash, redirect, url_for, session
+from hashlib import new
+from flask import Flask, render_template, flash, redirect, url_for
 from flask_session import Session
 from flask_login.utils import login_required
-from form import user_registration, login, Property, landlord_form, tenant_form, tenant_login_form, landlord_login_form
+from form import user_registration, login, Property, landlord_form, tenant_form, tenant_login_form, landlord_login_form, unit_form
 from models import user, db, Properties, Landlord, Tenant, Unit
 from flask_login import login_manager, login_user, logout_user, LoginManager
 import datetime, random
@@ -34,15 +34,15 @@ def load_user(Landlord_id):
 def load_user(Tenant_id):
   return Tenant.query.get(int(Tenant_id))
 
-active_users = []
-@app.route("/admin/active_users")
-def admin():
-  return render_template("active.html", active_users=active_users)
-
 @app.route("/")
 @app.route("/home")
 def index():
   return render_template('index.html')
+
+active_users = []
+@app.route("/admin/active_users")
+def admin():
+  return render_template("active.html", active_users=active_users)
 
 @app.route("/registration", methods=["POST", "GET"])
 def signup():
@@ -63,6 +63,7 @@ def signup():
     db.session.commit()
     flash(f'User registered successfully', category='success')
     return redirect(url_for('signin'))
+
   if form.errors != {}:
     for err_msg in form.errors.values():
       flash(f'There was an error creating the user: {err_msg}', category='danger')
@@ -121,10 +122,15 @@ def Landlord_login():
   if new_landlord and new_landlord.check_password_correction(attempted_password=form.password.data):
     login_user(new_landlord)
     flash(f"Authentication complete", category="success")
+
     properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner)
-    tenants = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).all()
+    for property in properties:
+      unit_count = Unit.query.filter(property.id == Unit.Property).count()
+      units = Unit.query.filter(property.id == Unit.Property)
+      tenants = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).all()
+
     active_users.append(new_landlord)
-    return render_template('dashboard1.html', properties=properties, tenants=tenants)
+    return render_template('dashboard1.html', properties=properties, tenants=tenants, units=units, unit_count=unit_count)
   else:
     flash(f"Invalid credentials", category="danger")
 
@@ -191,7 +197,7 @@ def tenant_logout():
   flash(f"Logged out successfully!", category="success")
   return redirect(url_for('tenant_login'))
 
-@app.route("/Landlord_portal/property_registration", methods=["POST", "GET"])
+@app.route("/Landlord_portal/Property_registration", methods=["POST", "GET"])
 @login_required
 def property():
   form = Property()
@@ -202,17 +208,41 @@ def property():
       floors = form.floors.data,
       rooms = form.units.data,
       Type = form.Type.data,
-      unique_id = random.randint(100000, 999999),
+      property_id = random.randint(100000, 999999),
       date = datetime.datetime.now(),
       owner = Landlord.query.filter_by(landlord_id=form.landlord_id.data).first().id
     )
     db.session.add(new_property)
     db.session.commit()
     flash(f"Property: {new_property.name}  was created successfully", category='success')
-    return redirect(url_for('landlord_dashboard'))
+    return redirect(url_for('Landlord_login'))
     
   if form.errors != {}:
     for err_msg in form.errors.values():
       flash(f'There was an error creating the property: {err_msg}', category='danger')
 
   return render_template("property.html", form=form)
+
+@app.route("/Landlord_portal/Property_registration/Unit_registration", methods=["POST", "GET"])
+def unit():
+  form = unit_form()
+  if form.validate_on_submit():
+    new_unit = Unit(
+      name = form.name.data,
+      floor = form.floor.data,
+      quantity = form.quantity.data,
+      Type = form.Type.data,
+      date = datetime.datetime.now(),
+      unit_id = random.randint(100000,999999),
+      Property = Properties.query.filter_by(property_id=form.property_id.data).first().id
+    )
+    db.session.add(new_unit)
+    db.session.commit()
+    flash(f"Unit Added successfully", category="success")
+    return redirect(url_for('Landlord_login'))
+  
+  if form.errors != {}:
+    for err_msg in form.errors.values():
+      flash(f"Unit could not be registered {err_msg}", category="danger")
+
+  return render_template("unit.html", form=form)

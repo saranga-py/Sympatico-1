@@ -4,6 +4,19 @@
   box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: black;
+}
+
+::-webkit-scrollbar-track {
+  background-color: bisque;
+}
+
+::-webkit-scrollbar-thumb {
+  background: grey; 
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -234,14 +234,20 @@
                   <tr>
                     <th>Property Name</th>
                     <th>Property Address</th>
-                    <th>Property Floors</th>
                     <th>Property Type</th>
+                    <th>Property Floors</th>
+                    <th>Property Units</th>
                   </tr>
                   <tr>
-                    <td>{{ property.name }}</td>
+                    <td>
+                      <a href="{{ url_for('unit') }}">
+                        {{ property.name }}
+                      </a>
+                    </td>
                     <td>{{ property.address }}</td>
-                    <td>{{ property.floors }}</td>
                     <td>{{ property.Type }}</td>
+                    <td>{{ property.floors }}</td>
+                    <td>{{ unit_count }}</td>
                   </tr>
                 {% endfor %}
               </table>
@@ -260,7 +266,6 @@
           <h3>Tenants</h3>
           {% if tenants %}
             {% for tenant in tenants %}
-            <hr>
             <table>
               <tr>
                 <th>First Name</th>
@@ -287,13 +292,47 @@
                 <td>{{ tenant.date }}</td>
               </tr>
             </table>
+            <hr>
             {% endfor %}
           {% else %}
             <h4 class="else">No Tenants</h4>
           {% endif %}
         </div>
       </article>
-      <article></article>
+      <article>
+        <div class="unit">
+          <h3>Units</h3>
+          {% if units %}
+            {% for unit in units %}
+              <table>
+                <tr>
+                  <th>Unit ID</th>
+                  <td>{{ unit.unit_id }}</td>
+                </tr>
+                <tr>
+                  <th>Name</th>
+                  <td>{{ unit.name }}</td>
+                </tr>
+                <tr>
+                  <th>Floor Located</th>
+                  <td>{{ unit.floor }} <sup>st</sup> floor</td>
+                </tr>
+                <tr>
+                  <th>Unit type</th>
+                  <td>{{ unit.Type }}</td>
+                </tr>
+                <tr>
+                  <th>Date Added</th>
+                  <td>{{ unit.date }}</td>
+                </tr>
+              </table>
+              <hr>
+            {% endfor %}
+          {% else %}
+            <h4>No Units</h4>
+          {% endif %}
+        </div>
+      </article>
       <article></article>
       <article></article>
       <article></article>
