@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
-from sqlalchemy.orm import backref, lazyload
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -69,6 +68,7 @@ class Tenant(db.Model, UserMixin):
   password = db.Column(db.String(), nullable=False)
   landlord = db.Column(db.Integer(), db.ForeignKey('Landlord.id'))
   unit = db.relationship('Unit', backref="unit", lazy=True)
+  complaint = db.relationship('Complaints', backref="complaints", lazy=True)
 
   @property
   def passwords(self):
@@ -104,4 +104,12 @@ class Unit(db.Model, UserMixin):
   quantity = db.Column(db.Integer(), nullable=False)
   unit_id = db.Column(db.Integer(), nullable=False)
   Property = db.Column(db.Integer(), db.ForeignKey('Property.id'))
+  tenant = db.Column(db.Integer(), db.ForeignKey('Tenant.id'))
+
+class Complaints(db.Model):
+  __tablename__ = "Complaints"
+  id = db.Column(db.Integer(), primary_key=True)
+  title = db.Column(db.String(length=50), nullable=False)
+  category = db.Column(db.String(length=20), nullable=False)
+  body = db.Column(db.String(length=100), nullable=False)
   tenant = db.Column(db.Integer(), db.ForeignKey('Tenant.id'))

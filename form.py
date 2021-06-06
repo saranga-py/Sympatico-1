@@ -1,6 +1,5 @@
-from datetime import date
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, PasswordField, SelectField
+from wtforms import StringField, IntegerField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import Length, EqualTo, Email, DataRequired, ValidationError
 from models import Properties, user, Landlord, Tenant
 
@@ -111,3 +110,9 @@ class unit_form(FlaskForm):
     property = Properties.query.filter_by(property_id=unit_id_to_validate.data).first()
     if property is None:
       raise ValidationError("Invalid Property ID")
+
+class complaint_form(FlaskForm):
+  tenant_id = IntegerField(label="Enter Tenant ID", validators=[DataRequired()])
+  title = StringField(label="Enter Title", validators=[Length(min=5, max=100), DataRequired()])
+  category = SelectField(label="Choose A category", choices=["Electricity", "Water", "Repairs", "Other"], validators=[DataRequired()])
+  body = TextAreaField(label="Type Complaint", validators=[DataRequired()])

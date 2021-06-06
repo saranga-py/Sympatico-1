@@ -136,7 +136,7 @@
             <svg>
               <use xlink:href="#comments"></use>
             </svg>
-            <span>Complaints</span>
+            <span id="complaint-btn">Complaints</span>
           </a>
         </li>
         <li>
@@ -228,6 +228,26 @@
       <article id="unit">
         <div class="unit">
           <h3>Unit Details</h3>
+          {% if unit %}
+            <table id="unit">
+              <tr>
+                <th>Unit Name</th>
+                <th>Unit ID</th>
+                <th>Unit Type</th>
+                <th>Unit Floor</th>
+                <th>Unit Property</th>
+              </tr>
+              <tr>
+                <td>{{ unit.name }}</td>
+                <td>{{ unit.unit_id }}</td>
+                <td>{{ unit.Type }}</td>
+                <td>{{ unit.floor }}</td>
+                <td>{{ properties.name }}</td>
+              </tr>
+            </table>
+          {% else %}
+            <h4>No Unit</h4>
+          {% endif %}
         </div>
       </article>
       <article id="landlord">
@@ -261,7 +281,37 @@
         {% endif %}
         </div>
       </article>
-      <article></article>
+      <article>
+        <div class="complaints">
+          <h3>Complaints</h3>
+          <div class="my_complaints">
+            {% if complaints %}
+              {% for complaint in complaints %}
+                <div class="div">
+                  <h4>Title: {{ complaint.title }}</h4>
+                  <hr>
+                <p>category: {{ complaint.category }}</p>
+                <h6>{{ complaint.body }}</h6>
+                </div>
+              {% endfor %}
+            {% else %}
+              <h4>No Complaints</h4>
+            {% endif %}
+            <hr>
+          </div>
+        <form method="POST">
+          {{ form1.hidden_tag() }}
+          <h4>Write a Complaint</h4>
+          {{ form1.tenant_id(placeholder="Enter Tenant ID") }} <br>
+          {{ form1.title(placeholder="Enter Title") }} <br>
+          {{ form1.category }}
+          {{ form1.body(placeholder="Type complaint here") }} <br>
+          <button class="btn" type="submit">
+            <span class="button--text">SEND</span>
+          </button>
+        </form>
+        </div>
+      </article>
       <article></article>
       <article></article>
       <article></article>

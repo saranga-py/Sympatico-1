@@ -140,11 +140,11 @@
           </a>
         </li>
         <li>
-          <a href="#0">
+          <a href="#complaints">
             <svg>
               <use xlink:href="#comments"></use>
             </svg>
-            <span>Tenant Complaints</span>
+            <span id="complaint">Tenant Complaints</span>
           </a>
         </li>
         <li>
@@ -236,6 +236,7 @@
                     <th>Property Address</th>
                     <th>Property Type</th>
                     <th>Property Floors</th>
+                    <th>Property Tenants</th>
                     <th>Property Units</th>
                   </tr>
                   <tr>
@@ -247,7 +248,8 @@
                     <td>{{ property.address }}</td>
                     <td>{{ property.Type }}</td>
                     <td>{{ property.floors }}</td>
-                    <td>{{ unit_count }}</td>
+                    <td>{{ tenants_count }}</td>
+                    <td>{{ property.unit }}</td>
                   </tr>
                 {% endfor %}
               </table>
@@ -288,8 +290,14 @@
                 <td>0{{ tenant.phone }}</td>
               </tr>
               <tr>
-                <th>Date Created</th>
+                <th>Date Registered</th>
                 <td>{{ tenant.date }}</td>
+              </tr>
+              <tr>
+                <th>Unit Assigned</th>
+                {% for x in tenant.unit %}
+                <td>{{ x.name }}</td>
+                {% endfor %}
               </tr>
             </table>
             <hr>
@@ -302,8 +310,9 @@
       <article>
         <div class="unit">
           <h3>Units</h3>
-          {% if units %}
-            {% for unit in units %}
+          {% if properties %}
+            {% for property in properties %}
+              {% for unit in property.unit %}
               <table>
                 <tr>
                   <th>Unit ID</th>
@@ -315,21 +324,22 @@
                 </tr>
                 <tr>
                   <th>Floor Located</th>
-                  <td>{{ unit.floor }} <sup>st</sup> floor</td>
+                  <td>{{ unit.floor }}</td>
                 </tr>
                 <tr>
                   <th>Unit type</th>
                   <td>{{ unit.Type }}</td>
                 </tr>
                 <tr>
-                  <th>Date Added</th>
+                  <th>Date Registered</th>
                   <td>{{ unit.date }}</td>
                 </tr>
               </table>
               <hr>
+              {% endfor %}
             {% endfor %}
           {% else %}
-            <h4>No Units</h4>
+            <h4 class="else">No Units</h4>
           {% endif %}
         </div>
       </article>
@@ -337,7 +347,28 @@
       <article></article>
       <article></article>
       <article></article>
-      <article></article>
+      <article id="complaints">
+        <div class="complaints">
+          <h3>Tenant Complaints</h3>
+          {% if tenants %}
+            {% for tenant in tenants %}
+              {% for complaint in tenant.complaint %}
+              <div class="div">
+                <div class="name">
+                  <p>{{ tenant.first_name }}</p>
+                </div>
+                <h4>Title: {{ complaint.title }}</h4>
+                <hr>
+                <p>category: {{ complaint.category }}</p>
+                <h6>{{ complaint.body }}</h6>
+              </div>
+              {% endfor %}
+            {% endfor %}
+          {% else %}
+            <h4>No Complaints</h4>
+          {% endif %}
+        </div>
+      </article>
     </section>
     <footer class="page-footer">
       <span>made by </span>

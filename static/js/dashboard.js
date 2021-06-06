@@ -8,6 +8,12 @@ const switchLabel = document.querySelector(".switch label");
 const switchLabelText = switchLabel.querySelector("span:last-child");
 const collapsedClass = "collapsed";
 const lightModeClass = "light-mode";
+const form = document.querySelector("form")
+const complaint = document.querySelector("#complaint-btn")
+
+complaint.addEventListener("click", ()=> {
+  form.classList.toggle("show-form")
+})
 
 collapseBtn.addEventListener("click", function () {
   body.classList.toggle(collapsedClass);

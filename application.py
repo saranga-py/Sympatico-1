@@ -1,20 +1,32 @@
-from hashlib import new
-from flask import Flask, render_template, flash, redirect, url_for
+from flask import Flask, render_template, flash, redirect
+from flask.helpers import url_for
+from flask_mail import Mail, Message
 from flask_session import Session
-from flask_login.utils import login_required
-from form import user_registration, login, Property, landlord_form, tenant_form, tenant_login_form, landlord_login_form, unit_form
-from models import user, db, Properties, Landlord, Tenant, Unit
-from flask_login import login_manager, login_user, logout_user, LoginManager
+from form import user_registration, login, Property, landlord_form, tenant_form, tenant_login_form, landlord_login_form, unit_form, complaint_form
+from models import user, db, Properties, Landlord, Tenant, Unit, Complaints
+from flask_login import login_manager, login_user, logout_user, LoginManager, login_required
 import datetime, random
 
 app = Flask(__name__)
+mail = Mail(app)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = ('mssql://KEVINKAGWIMA/sympatico?driver=sql server?trusted_connection=yes')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'mysecretkeythatyouarenotsupposedtosee'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'kevokagwima@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Hunter9039'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_DEFAULT_SENDER'] = 'kevokagwima@gmail.com'
+app.config['MAIL_MAX_EMAILS'] = None
+app.config['MAIL_SUPRESS_SEND'] = app.testing
+app.config['MAIL_ASCII_ATTACHMENTS'] = False
 
+mail = Mail(app)
 Session(app)
 db.init_app(app)
 login_manager = LoginManager()
@@ -25,12 +37,8 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
   return user.query.get(int(user_id))
-
-@login_manager.user_loader
 def load_user(Landlord_id):
   return Landlord.query.get(int(Landlord_id))
-
-@login_manager.user_loader
 def load_user(Tenant_id):
   return Tenant.query.get(int(Tenant_id))
 
@@ -107,6 +115,12 @@ def landlord():
     )
     db.session.add(new_landlord)
     db.session.commit()
+    msg = Message(
+      "You Have Successfully Registered For A Sympatico Account",
+      recipients=["kevinkagwima4@gmail.com"]
+    )
+    msg.body = f"Hello {new_landlord.username}, your account has been successfully created. Your Landlord ID is {new_landlord.landlord_id}. Remember not to share this code with anyone other than your tenants when they're registering themselves."
+    mail.send(msg)
     flash(f"Account created successfully", category="success")
     return redirect(url_for('Landlord_login'))
   if form.errors != {}:
@@ -118,22 +132,20 @@ def landlord():
 @app.route("/landlord_login", methods=["POST", "GET"])
 def Landlord_login():
   form = landlord_login_form()
-  new_landlord = Landlord.query.filter_by(landlord_id=form.landlord_id.data).first()
-  if new_landlord and new_landlord.check_password_correction(attempted_password=form.password.data):
-    login_user(new_landlord)
-    flash(f"Authentication complete", category="success")
-
-    properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner)
-    for property in properties:
-      unit_count = Unit.query.filter(property.id == Unit.Property).count()
-      units = Unit.query.filter(property.id == Unit.Property)
+  if form.validate_on_submit():
+    new_landlord = Landlord.query.filter_by(landlord_id=form.landlord_id.data).first()
+    if new_landlord and new_landlord.check_password_correction(attempted_password=form.password.data):
+      login_user(new_landlord)
+      flash(f"Authentication complete", category="success")
       tenants = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).all()
-
-    active_users.append(new_landlord)
-    return render_template('dashboard1.html', properties=properties, tenants=tenants, units=units, unit_count=unit_count)
-  else:
-    flash(f"Invalid credentials", category="danger")
-
+      tenants_count = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).count()
+      properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner)
+      unit_count = Unit.query.filter(Properties.id == Unit.Property).count()
+      unit_tenant = Unit.query.filter_by(tenant=Tenant.id).first()
+      active_users.append(new_landlord)
+      return render_template('dashboard1.html', properties=properties, tenants=tenants, tenants_count=tenants_count, unit_count=unit_count, unit_tenant=unit_tenant)
+    else:
+      flash(f"Invalid credentials", category="danger")
   return render_template("landlord_login.html", form=form)
 
 @app.route("/Landlord_dashboard", methods=["POST", "GET"])
@@ -166,6 +178,12 @@ def tenant():
     )
     db.session.add(new_tenant)
     db.session.commit()
+    msg = Message(
+      "You Have Successfully Registered For A Sympatico Account",
+      recipients=["kevinkagwima4@gmail.com"]
+    )
+    msg.body = f"Hello {new_tenant.username}, your account has been successfully created. Your Tenant ID is {new_tenant.tenant_id}. Remember not to share this code with anyone other than your tenants when they're registering themselves."
+    mail.send(msg)
     login_user(new_tenant)
     flash(f"Account created successfully", category="success")
     return redirect(url_for('tenant_login'))
@@ -179,16 +197,21 @@ def tenant():
 @app.route("/tenant_authentication", methods=["POST", "GET"])
 def tenant_login():
   form = tenant_login_form()
+  form1 = complaint_form()
   if form.validate_on_submit():
     new_tenant = Tenant.query.filter_by(tenant_id=form.tenant_id.data).first()
     if new_tenant and new_tenant.check_password_correction(attempted_password=form.password.data):
       login_user(new_tenant)
       flash(f"Authentication complete", category="success")
       landlord = db.session.query(Landlord).filter(new_tenant.landlord == Landlord.id).first()
-      return render_template('dashboard.html', landlord=landlord)
+      properties = Properties.query.filter_by(owner=landlord.id).first()
+      unit = db.session.query(Unit).filter(Unit.tenant == new_tenant.id).first()
+      complaints = db.session.query(Complaints).filter(new_tenant.id == Complaints.tenant).all()
+      return render_template('dashboard.html', landlord=landlord, properties=properties, unit=unit, complaints=complaints, form1=form1)
     else:
       flash(f"Invalid credentials", category="danger")
-
+  if form1.validate_on_submit():
+    complaint()
   return render_template("tenant_login.html", form=form)
 
 @app.route("/logout_tenant")
@@ -246,3 +269,21 @@ def unit():
       flash(f"Unit could not be registered {err_msg}", category="danger")
 
   return render_template("unit.html", form=form)
+
+@app.route("/complaints")
+def complaint():
+  form1 = complaint_form()
+  if form1.validate_on_submit():
+    new_complaint = Complaints(
+      title = form1.title.data,
+      category = form1.category.data,
+      body = form1.body.data,
+      tenant = Tenant.query.filter_by(tenant_id=form1.tenant_id.data).first().id
+    )
+    db.session.add(new_complaint)
+    db.session.commit()
+    flash(f"Complaint sent", category="success")
+    return render_template('dashboard.html', landlord=landlord, form1=form1)
+  else:
+    flash(f"Complaint not sent", category="danger")
+    return redirect(url_for('Landlord_login'))
