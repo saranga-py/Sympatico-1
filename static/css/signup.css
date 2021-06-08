@@ -1,9 +1,9 @@
 body {
-  background-color: #212121;
+  background: -webkit-linear-gradient(orange, red);
 }
 
 .overlays {
-  background-color: white;
+  background-color: #212121;
 }
 
 .user {
@@ -19,14 +19,38 @@ body {
 }
 
 .nav {
+  position: fixed;
+  top: 0;
   padding: 20px;
+  background-color: #212121;
   justify-content: space-between;
-  box-shadow: 0px 2px 10px -8px black;
+  box-shadow: 0px 2px 15px -8px rgb(255, 255, 255);
+}
+
+.form {
+  background-color: #212121;
+  border-radius: 5px;
+  padding: 62px 0;
+  width: 50vw;
+  margin: 140px auto;
+  box-shadow: 0px 1px 15px -1px black;
+}
+
+.form p {
+  font-family: monospace;
+  color: white;
+  font-size: 18px;
+  margin-top: 30px;
+}
+
+.form a {
+  color: rgb(0, 183, 255);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 20px;
 }
 
 form {
   background: #212121;
-  padding: 50px;
   text-align: center;
 }
 
@@ -41,7 +65,7 @@ form > h4 {
 input {
   padding: 15px;
   margin: 5px;
-  width: 80vw;
+  width: 40vw;
   border-radius: 8px;
   background-color: rgb(0, 0, 0);
   border: 2px solid bisque;
@@ -62,7 +86,7 @@ form > .btn {
   position: relative;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   padding: 10px;
-  width: 80vw;
+  width: 40vw;
   border-radius: 8px;
   font-size: 20px;
   background-color: rgb(0, 26, 255);
@@ -105,23 +129,4 @@ form > .btn {
   to {
     transform: rotate(1turn);
   }
-}
-
-.box {
-  padding: 30px;
-  background-color: bisque;
-  text-align: center;
-}
-
-.box p {
-  font-size: 20px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  color: rgb(0, 0, 0);
-  margin-bottom: 10px;
-}
-
-.box > a {
-  font-size: 20px;
-  color: rgb(0, 119, 255);
-  font-family: monospace;
 }

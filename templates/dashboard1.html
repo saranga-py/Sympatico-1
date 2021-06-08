@@ -249,12 +249,12 @@
                     <td>{{ property.Type }}</td>
                     <td>{{ property.floors }}</td>
                     <td>{{ tenants_count }}</td>
-                    <td>{{ property.unit }}</td>
+                    <td>{{ unit_count }}</td>
                   </tr>
                 {% endfor %}
               </table>
             {% else %}
-              <h2>You don't own any property</h2>
+              <h2 class="else">You don't own any property</h2>
             {% endif %}
           <hr>
           <a href="{{ url_for('property') }}">
@@ -270,16 +270,8 @@
             {% for tenant in tenants %}
             <table>
               <tr>
-                <th>First Name</th>
-                <td>{{ tenant.first_name }}</td>
-              </tr>
-              <tr>
-                <th>Second Name</th>
-                <td>{{ tenant.second_name }}</td>
-              </tr>
-              <tr>
-                <th>Last Name</th>
-                <td>{{ tenant.last_name }}</td>
+                <th>Name</th>
+                <td>{{ tenant.first_name }} {{ tenant.second_name }}</td>
               </tr>
               <tr>
                 <th>Email Address</th>
@@ -290,14 +282,14 @@
                 <td>0{{ tenant.phone }}</td>
               </tr>
               <tr>
-                <th>Date Registered</th>
-                <td>{{ tenant.date }}</td>
-              </tr>
-              <tr>
-                <th>Unit Assigned</th>
-                {% for x in tenant.unit %}
-                <td>{{ x.name }}</td>
-                {% endfor %}
+                <th id="x">Unit Assigned</th>
+                {% if tenant.unit %}
+                  {% for x in tenant.unit %}
+                    <td id="z">{{ x.name }}, {{ x.Type }}</td>
+                  {% endfor %}
+                {% else %}
+                  <td id="y">No Unit Assigned</td>
+                {% endif %}
               </tr>
             </table>
             <hr>
@@ -350,7 +342,7 @@
       <article id="complaints">
         <div class="complaints">
           <h3>Tenant Complaints</h3>
-          {% if tenants %}
+          {% if tenants.complaint %}
             {% for tenant in tenants %}
               {% for complaint in tenant.complaint %}
               <div class="div">
@@ -365,7 +357,7 @@
               {% endfor %}
             {% endfor %}
           {% else %}
-            <h4>No Complaints</h4>
+            <h2 class="else">No Complaints</h2>
           {% endif %}
         </div>
       </article>

@@ -10,19 +10,20 @@ Sympatico | Tenant Login
 {% endblock %}
 
 {% block body %}
-<form method="POST">
-  {{ form.hidden_tag() }}
-  <h4>Confirm Your Identity</h4>
-  {{ form.tenant_id(placeholder="Enter Tenant ID") }}
-  {{ form.password(placeholder="Enter Password") }}
-  <button class="btn" type="submit">
-    <span class="button--text">SIGN IN</span>
-  </button>
-  <div class="box">
+<div class="form">
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <h4>Confirm Your Identity</h4>
+    {{ form.tenant_id(placeholder="Enter Tenant ID") }} <br>
+    {{ form.password(placeholder="Enter Password") }} <br>
+    <button class="btn" type="submit">
+      <span class="button--text">SIGN IN</span>
+    </button>
     <p>Don't have an account, proceed to Registration</p>
     <a href="{{ url_for('tenant') }}">Register</a>
-  </div>
-</form>
+  </form>
+</div>
+
 
 <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
 {% endblock %}

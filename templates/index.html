@@ -11,8 +11,8 @@ Sympatico | Home
 {% endblock %}
 
 {% block content %}
-<a id="links" href="#">ABOUT US</a>
-<a id="links" href="#">SERVICES</a>
+<a id="links" href="{{ url_for('about_us') }}">ABOUT US</a>
+<a id="links" href="{{ url_for('services') }}">SERVICES</a>
 <div class="dropdown">
   <a id="links" href="#">SYSTEMS 
     <i class="fa fa-caret-down"></i>
@@ -20,9 +20,10 @@ Sympatico | Home
   <div class="dropdown-content">
     <a href="{{ url_for('landlord') }}" target="_blank">Landlord Portal</a>
     <a href="{{ url_for('tenant') }}" target="_blank">Tenant Portal</a>
+    <a href="{{ url_for('admin') }}" target="_blank">Admin Portal</a>
   </div>
 </div>
-<a id="links" href="#">CONTACT US</a> 
+<a id="links" href="{{ url_for('contact_us') }}">CONTACT US</a> 
 {% endblock %}
 
 {% block body %}
@@ -54,9 +55,6 @@ Sympatico | Home
   </div>
   <div class="project">
     <h4 data-aos="fade-in" data-aos-duration="1000">projects done so far</h4>
-    <div class="grid">
-      
-    </div>
   </div>
 </div>
 <div class="experts">

@@ -105,6 +105,7 @@ class unit_form(FlaskForm):
   floor = IntegerField(label='Floor', validators=[DataRequired()])
   quantity = IntegerField(label="Enter Quantity", validators=[DataRequired()])
   Type = SelectField(label='Type of Unit',choices=["1 Bedroom", "2 Bedroom", "3 Bedroom", "Bedsitter", "1 Bedroom", "Penthouse", "4 Bedroom", "Mansionate"], validators=[DataRequired()])
+  tenant_id = IntegerField(label="Enter Tenant ID", validators=[DataRequired()])
 
   def validate_property_id(self, unit_id_to_validate):
     property = Properties.query.filter_by(property_id=unit_id_to_validate.data).first()

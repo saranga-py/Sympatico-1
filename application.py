@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash, redirect
+from flask import Flask, render_template, flash, redirect, session
 from flask.helpers import url_for
 from flask_mail import Mail, Message
 from flask_session import Session
@@ -38,7 +38,7 @@ login_manager.init_app(app)
 def load_user(user_id):
   return user.query.get(int(user_id))
 def load_user(Landlord_id):
-  return Landlord.query.get(int(Landlord_id))
+  return Landlord.query.get(Landlord_id)
 def load_user(Tenant_id):
   return Tenant.query.get(int(Tenant_id))
 
@@ -46,6 +46,18 @@ def load_user(Tenant_id):
 @app.route("/home")
 def index():
   return render_template('index.html')
+
+@app.route("/about_us")
+def about_us():
+  return render_template("about.html")
+
+@app.route("/services")
+def services():
+  return render_template("services.html")
+
+@app.route("/contact_us")
+def contact_us():
+  return render_template("contact.html")
 
 active_users = []
 @app.route("/admin/active_users")
@@ -139,11 +151,15 @@ def Landlord_login():
       flash(f"Authentication complete", category="success")
       tenants = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).all()
       tenants_count = db.session.query(Tenant).filter(new_landlord.id == Tenant.landlord).count()
-      properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner)
-      unit_count = Unit.query.filter(Properties.id == Unit.Property).count()
+      properties = db.session.query(Properties).filter(new_landlord.id == Properties.owner).all()
       unit_tenant = Unit.query.filter_by(tenant=Tenant.id).first()
       active_users.append(new_landlord)
-      return render_template('dashboard1.html', properties=properties, tenants=tenants, tenants_count=tenants_count, unit_count=unit_count, unit_tenant=unit_tenant)
+      if properties:
+        for property in properties:
+          unit_count = Unit.query.filter_by(Property= property.id).count()
+        return render_template('dashboard1.html', properties=properties, tenants=tenants, tenants_count=tenants_count, unit_count=unit_count, unit_tenant=unit_tenant)
+      else:
+        return render_template('dashboard1.html', properties=properties, tenants=tenants, tenants_count=tenants_count, unit_tenant=unit_tenant)
     else:
       flash(f"Invalid credentials", category="danger")
   return render_template("landlord_login.html", form=form)
@@ -154,7 +170,6 @@ def landlord_dashboard():
   return render_template("dashboard1.html")
 
 @app.route("/logout_landlord")
-@login_required
 def landlord_logout():
   logout_user()
   flash(f"Logged out successfully!", category="success")
@@ -221,7 +236,6 @@ def tenant_logout():
   return redirect(url_for('tenant_login'))
 
 @app.route("/Landlord_portal/Property_registration", methods=["POST", "GET"])
-@login_required
 def property():
   form = Property()
   if form.validate_on_submit():
@@ -257,7 +271,8 @@ def unit():
       Type = form.Type.data,
       date = datetime.datetime.now(),
       unit_id = random.randint(100000,999999),
-      Property = Properties.query.filter_by(property_id=form.property_id.data).first().id
+      Property = Properties.query.filter_by(property_id=form.property_id.data).first().id,
+      tenant = Tenant.query.filter_by(tenant_id=form.tenant_id.data).first().id
     )
     db.session.add(new_unit)
     db.session.commit()

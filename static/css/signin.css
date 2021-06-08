@@ -1,34 +1,57 @@
 body {
-  background-color: #212121;
+  background: -webkit-linear-gradient(orange, red);
 }
 
 .overlays {
-  background-color: white;
+  background-color: black;;
 }
 
-.burger {
-  display: none;
-}
-
-.user {
-  display: none;
-}
-
-.login {
+.burger, .user, .login, .footer {
   display: none;
 }
 
 .nav {
+  background-color: black;
   justify-content: space-between;
   padding: 20px;
   box-shadow: 0px 2px 10px -8px black;
 }
 
+.form {
+  background-color: #212121;
+  border-radius: 5px;
+  padding: 62px 0;
+  width: 40vw;
+  margin: 140px auto;
+  box-shadow: 0px 1px 15px -1px black;
+}
+
+.form p {
+  font-family: monospace;
+  color: white;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+h4 {
+  padding: 0.9px;
+  font-size: 18px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+span {
+  color: yellow;
+  font-size: 20px;
+}
+
+.form a {
+  color: rgb(0, 195, 255);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 18px;
+}
+
 form {
-  background: #212121;
-  padding-top: 150px;
   text-align: center;
-  padding-bottom: 92px;
 }
 
 form > h4 {
@@ -42,7 +65,7 @@ form > h4 {
 input {
   padding: 15px;
   margin: 5px;
-  width: 60vw;
+  width: 30vw;
   border-radius: 8px;
   background-color: rgb(0, 0, 0);
   border: 2px solid bisque;
@@ -63,17 +86,16 @@ form > .btn {
   position: relative;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   padding: 10px;
-  width: 60vw;
+  width: 30vw;
   border-radius: 8px;
   font-size: 20px;
-  background-color: rgb(0, 255, 13);
-  border: 1px solid rgb(30, 255, 0);
-  color: black;
+  background-color: rgb(1, 212, 12);
+  border: 1px solid rgb(1, 212, 12);
+  color: white;
   cursor: pointer;
 }
 
 .button--text {
-  font-family: monospace;
   font-size: 18px;
   transition: all 0.2s;
 }
@@ -106,22 +128,4 @@ form > .btn {
   to {
     transform: rotate(1turn);
   }
-}
-
-.box {
-  margin-top: 120px;
-  text-align: center;
-}
-
-.box p {
-  font-size: 20px;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  color: bisque;
-  margin-bottom: 10px;
-}
-
-.box > a {
-  font-size: 20px;
-  color: rgb(0, 119, 255);
-  font-family: monospace;
 }

@@ -6,7 +6,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin</title>
 </head>
+<style>
+  h4 {
+    text-align: center;
+    background-color: black;
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 25px;
+  }
+
+  table {
+    width: 80vw;
+    margin: 10px auto;
+  }
+
+  th, td {
+    padding: 5px;
+    text-align: center;
+    font-size: 20px;
+    text-transform: capitalize;
+  }
+
+  th {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 25px;
+    background-color: gainsboro;
+  }
+
+  td {
+    font-family: monospace;
+    background-color: antiquewhite;
+  }
+</style>
 <body>
+  <h4>Landlords</h4>
+  <table>
+    {% for landlord in landlords %}
+      <tr>
+        <th>Landlord ID</th>
+        <th>Landlord Name</th>
+        <th>Landlord Email</th>
+        <th>Landlord Phone Number</th>
+      </tr>
+      <tr>
+        <td>{{ landlord.landlord_id }}</td>
+        <td>{{ landlord.first_name }} {{ landlord.second_name }}</td>
+        <td>{{ landlord.email }}</td>
+        <td>0{{ landlord.phone }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <h4>Tenants</h4>
+  <table>
+    {% for tenant in tenants %}
+      <tr>
+        <th>Tenant ID</th>
+        <th>Tenant Name</th>
+        <th>Tenant Email</th>
+        <th>Tenant Phone Number</th>
+      </tr>
+      <tr>
+        <td>{{ tenant.tenant_id }}</td>
+        <td>{{ tenant.first_name }} {{ tenant.second_name }}</td>
+        <td>{{ tenant.email }}</td>
+        <td>0{{ tenant.phone }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <h4>Properties</h4>
+  <table>
+    {% for property in properties %}
+      <tr>
+        <th>property ID</th>
+        <th>property Name</th>
+        <th>property Address</th>
+        <th>property Type</th>
+      </tr>
+      <tr>
+        <td>{{ property.property_id }}</td>
+        <td>{{ property.name }}</td>
+        <td>{{ property.address }}</td>
+        <td>{{ property.Type }}</td>
+      </tr>
+    {% endfor %}
+  </table>
   <h4>Active Users</h4>
   <ul>
     {% for users in active_users %}

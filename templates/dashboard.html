@@ -246,7 +246,7 @@
               </tr>
             </table>
           {% else %}
-            <h4>No Unit</h4>
+            <h4 class="else">No Unit</h4>
           {% endif %}
         </div>
       </article>
@@ -277,11 +277,16 @@
             </tr>
         </table>
         {% else %}
-          <h4>No Landlord</h4>
+          <h4 class="else">No Landlord</h4>
         {% endif %}
         </div>
       </article>
-      <article>
+      <article></article>
+      <article></article>
+      <article></article>
+      <article></article>
+      <article></article>
+      <article id="complaints">
         <div class="complaints">
           <h3>Complaints</h3>
           <div class="my_complaints">
@@ -295,28 +300,25 @@
                 </div>
               {% endfor %}
             {% else %}
-              <h4>No Complaints</h4>
+              <h2 class="else">No Complaints</h2>
             {% endif %}
             <hr>
           </div>
-        <form method="POST">
-          {{ form1.hidden_tag() }}
-          <h4>Write a Complaint</h4>
-          {{ form1.tenant_id(placeholder="Enter Tenant ID") }} <br>
-          {{ form1.title(placeholder="Enter Title") }} <br>
-          {{ form1.category }}
-          {{ form1.body(placeholder="Type complaint here") }} <br>
-          <button class="btn" type="submit">
-            <span class="button--text">SEND</span>
-          </button>
-        </form>
+          <form method="POST">
+            {{ form1.hidden_tag() }}
+            <div class="form">
+              <h4>Write a Complaint</h4>
+            {{ form1.tenant_id(placeholder="Enter Tenant ID") }} <br>
+            {{ form1.title(placeholder="Enter Title") }} <br>
+            {{ form1.category }} <br>
+            {{ form1.body(placeholder="Type complaint here") }} <br>
+            <button class="btn" type="submit">
+              <span class="button--text">SEND</span>
+            </button>
+            </div>
+          </form>
         </div>
       </article>
-      <article></article>
-      <article></article>
-      <article></article>
-      <article></article>
-      <article></article>
     </section>
     <footer class="page-footer">
       <span>made by </span>
